@@ -32,6 +32,12 @@ export default function WelcomeScreen() {
             <Text style={styles.linkText}>Preview the booking flow</Text>
           </Pressable>
         </Link>
+
+        <Link href="/my-bookings" asChild>
+          <Pressable style={styles.bookingsButton}>
+            <Text style={styles.bookingsButtonText}>View my bookings</Text>
+          </Pressable>
+        </Link>
       </View>
     </View>
   );
@@ -113,5 +119,18 @@ const styles = StyleSheet.create({
     color: '#0f766e',
     fontWeight: '700',
     textAlign: 'center',
+  },
+  bookingsButton: {
+    backgroundColor: '#ecfdf5',
+    borderRadius: 14,
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#b7f0d8',
+  },
+  bookingsButtonText: {
+    color: '#0f766e',
+    fontWeight: '700',
   },
 });

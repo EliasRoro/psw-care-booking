@@ -102,3 +102,33 @@ export const availabilitySlots = [
   'Thu • 3:00 PM',
   'Fri • 11:00 AM',
 ];
+
+export const bookings = [
+  {
+    id: 'bk-101',
+    service: 'Personal Care',
+    date: 'Tue, Sep 30',
+    time: '10:30 AM',
+    status: 'Confirmed',
+    caregiver: 'Maya W.',
+    amount: '$142.00',
+  },
+  {
+    id: 'bk-102',
+    service: 'Companionship',
+    date: 'Thu, Oct 3',
+    time: '2:00 PM',
+    status: 'Requested',
+    caregiver: 'Pending match',
+    amount: '$68.00',
+  },
+  {
+    id: 'bk-103',
+    service: 'Meal Support',
+    date: 'Sat, Oct 5',
+    time: '9:00 AM',
+    status: 'Completed',
+    caregiver: 'Alicia D.',
+    amount: '$96.00',
+  },
+];
