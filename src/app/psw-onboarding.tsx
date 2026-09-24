@@ -1,6 +1,8 @@
 import { Link } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+
+import { getCompletedOnboardingSteps, saveCompletedOnboardingSteps } from '../lib/onboarding';
 
 const initialSteps = [
   { id: 'certificate', title: 'PSW certificate', detail: 'Upload a clear copy of your PSW certificate.', status: 'Required' },
@@ -14,8 +16,14 @@ export default function PswOnboardingScreen() {
   const [completed, setCompleted] = useState<string[]>([]);
   const completedCount = completed.length;
 
-  const toggleStep = (id: string) => {
-    setCompleted((current) => current.includes(id) ? current.filter((stepId) => stepId !== id) : [...current, id]);
+  useEffect(() => {
+    getCompletedOnboardingSteps().then(setCompleted);
+  }, []);
+
+  const toggleStep = async (id: string) => {
+    const nextSteps = completed.includes(id) ? completed.filter((stepId) => stepId !== id) : [...completed, id];
+    setCompleted(nextSteps);
+    await saveCompletedOnboardingSteps(nextSteps);
   };
 
   return (
