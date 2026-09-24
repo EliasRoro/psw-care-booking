@@ -22,6 +22,8 @@ export default function BookingDetailScreen() {
 
       <View style={styles.boundary}><Text style={styles.boundaryTitle}>Before the visit</Text><Text style={styles.boundaryText}>Please keep care notes non-clinical. For changes more than 24 hours before the visit, contact the care team.</Text></View>
 
+      <Link href="/payment" asChild><Pressable style={styles.paymentButton}><Text style={styles.paymentButtonText}>Review test payment</Text></Pressable></Link>
+
       <Text style={styles.sectionTitle}>Rate your visit</Text>
       <View style={styles.ratingPanel}><Text style={styles.ratingPrompt}>{submitted ? 'Thanks for your feedback.' : 'How was your experience?'}</Text><View style={styles.stars}>{[1, 2, 3, 4, 5].map((value) => <Pressable key={value} onPress={() => setRating(value)}><Text style={[styles.star, value <= rating && styles.starSelected]}>★</Text></Pressable>)}</View>{rating > 0 && !submitted ? <Pressable style={styles.rateButton} onPress={() => setSubmitted(true)}><Text style={styles.rateButtonText}>Submit rating</Text></Pressable> : null}</View>
 
@@ -55,6 +57,8 @@ const styles = StyleSheet.create({
   boundary: { backgroundColor: '#fff6ee', borderWidth: 1, borderColor: '#f0d4bf', borderRadius: 14, padding: 15, marginBottom: 24 },
   boundaryTitle: { color: '#9c573e', fontSize: 14, fontWeight: '800' },
   boundaryText: { color: '#7e6a5e', fontSize: 12, lineHeight: 18, marginTop: 5 },
+  paymentButton: { backgroundColor: '#0f766e', borderRadius: 12, paddingVertical: 14, alignItems: 'center', marginBottom: 24 },
+  paymentButtonText: { color: '#fff', fontWeight: '800', fontSize: 13 },
   ratingPanel: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#dfeae9', borderRadius: 16, padding: 18, alignItems: 'center' },
   ratingPrompt: { color: '#163734', fontSize: 14, fontWeight: '800' },
   stars: { flexDirection: 'row', gap: 8, marginVertical: 14 },
