@@ -1,6 +1,8 @@
 import { Link } from 'expo-router';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { PublicHeader } from '../components/PublicHeader';
+
 const aboutImage = {
   uri: 'https://images.unsplash.com/photo-1559234938-b60fff04894d?auto=format&fit=crop&w=1200&q=85',
 };
@@ -8,10 +10,7 @@ const aboutImage = {
 export default function AboutScreen() {
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.contentContainer}>
-      <View style={styles.topBar}>
-        <Link href="/" asChild><Pressable><Text style={styles.brand}>PSW <Text style={styles.accent}>/</Text> CARE</Text></Pressable></Link>
-        <Link href="/book" asChild><Pressable style={styles.smallButton}><Text style={styles.smallButtonText}>Request support</Text></Pressable></Link>
-      </View>
+      <PublicHeader actionLabel="Request support" actionHref="/book" />
 
       <View style={styles.hero}>
         <View style={styles.heroCopy}>

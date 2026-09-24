@@ -1,6 +1,8 @@
 import { Link } from 'expo-router';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { PublicHeader } from '../components/PublicHeader';
+
 const informationImage = {
   uri: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1100&q=85',
 };
@@ -15,10 +17,7 @@ const careTypes = [
 export default function InformationScreen() {
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.contentContainer}>
-      <View style={styles.topBar}>
-        <Link href="/" asChild><Pressable><Text style={styles.brand}>PSW <Text style={styles.accent}>/</Text> CARE</Text></Pressable></Link>
-        <Link href="/contact" asChild><Pressable><Text style={styles.topLink}>Have a question?</Text></Pressable></Link>
-      </View>
+      <PublicHeader actionLabel="Have a question?" actionHref="/contact" />
 
       <View style={styles.hero}>
         <View style={styles.heroCopy}>

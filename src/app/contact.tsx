@@ -1,16 +1,15 @@
 import { Link } from 'expo-router';
 import { Linking, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { PublicHeader } from '../components/PublicHeader';
+
 export default function ContactScreen() {
   const openEmail = () => Linking.openURL('mailto:hello@pswcare.ca');
   const openPhone = () => Linking.openURL('tel:+14165550184');
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.contentContainer}>
-      <View style={styles.topBar}>
-        <Link href="/" asChild><Pressable><Text style={styles.brand}>PSW <Text style={styles.accent}>/</Text> CARE</Text></Pressable></Link>
-        <Link href="/book" asChild><Pressable><Text style={styles.topLink}>Book support</Text></Pressable></Link>
-      </View>
+      <PublicHeader actionLabel="Book support" actionHref="/book" />
 
       <View style={styles.hero}>
         <Text style={styles.kicker}>CONTACT OUR TEAM</Text>
