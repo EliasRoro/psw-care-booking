@@ -83,6 +83,8 @@ The project has also started the database layer in `supabase/migrations/001_init
 
 This migration includes the core tables for the PSW booking app and enables Row Level Security on every table. Each policy is documented in plain language in the Supabase README so the app is designed with privacy and access control in mind.
 
+The migration now also creates profiles automatically when a Client or PSW signs up, prevents self-service admin role escalation, and constrains booking, document, review, and status writes by role. It still needs to be applied to a real Supabase project before production data is used.
+
 ## License
 
 This project is provided as a starting point for a PSW booking MVP and is not medical advice.

@@ -88,4 +88,14 @@ Row Level Security (RLS) makes sure that users only see the records they are all
 
 ## Next step
 
-After the schema is created in Supabase, the next milestone is to build the client booking screens using the `bookings` table and add a clean onboarding flow for PSWs.
+## Applying the migration
+
+The migration is ready to run against a Supabase project, but it has not been applied to a live project from this workspace because no Supabase project credentials or CLI connection are configured here.
+
+1. Create or open the Supabase project in the Canadian region when available.
+2. Open the SQL Editor and run `migrations/001_initial_schema.sql`.
+3. Copy the project URL and anon key into the local `.env` file.
+4. Create an admin user, then insert or update that user's `profiles.role` to `admin` from the SQL Editor. Admin is intentionally not self-selectable in the app.
+5. Confirm RLS by testing one client, one PSW, and one admin account before using real data.
+
+The migration also creates an `on_auth_user_created` trigger so new Client and PSW sign-ups automatically receive a matching `profiles` row. The trigger defaults unknown roles to `client`; admin accounts must be provisioned manually.

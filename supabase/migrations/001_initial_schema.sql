@@ -4,19 +4,6 @@
 
 create extension if not exists pgcrypto;
 
-create or replace function public.user_has_role(role_name text)
-returns boolean
-language sql
-stable
-as $$
-  select exists (
-    select 1
-    from public.profiles
-    where id = auth.uid()
-      and role = role_name
-  );
-$$;
-
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   role text not null check (role in ('client', 'psw', 'admin')),
@@ -28,18 +15,61 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+-- Security-definer avoids recursively evaluating the profiles SELECT policy.
+create or replace function public.user_has_role(role_name text)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.profiles
+    where id = auth.uid()
+      and role = role_name
+  );
+$$;
+
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.profiles (id, role, first_name, last_name)
+  values (
+    new.id,
+    case when new.raw_user_meta_data ->> 'role' in ('client', 'psw')
+      then new.raw_user_meta_data ->> 'role'
+      else 'client'
+    end,
+    new.raw_user_meta_data ->> 'first_name',
+    new.raw_user_meta_data ->> 'last_name'
+  )
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
+
 create policy "Users can read only their own profile"
   on public.profiles for select
   using (auth.uid() = id or user_has_role('admin'));
 
 create policy "Users can insert their own profile"
   on public.profiles for insert
-  with check (auth.uid() = id);
+  with check (auth.uid() = id and role in ('client', 'psw'));
 
 create policy "Users can update their own profile"
   on public.profiles for update
   using (auth.uid() = id or user_has_role('admin'))
-  with check (auth.uid() = id or user_has_role('admin'));
+  with check ((auth.uid() = id and role in ('client', 'psw')) or user_has_role('admin'));
 
 create table if not exists public.client_addresses (
   id uuid primary key default gen_random_uuid(),
@@ -78,6 +108,19 @@ create table if not exists public.psw_profiles (
 
 alter table public.psw_profiles enable row level security;
 
+create or replace function public.current_psw_status(profile_id uuid)
+returns text
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select status
+  from public.psw_profiles
+  where id = profile_id
+    and id = auth.uid();
+$$;
+
 create policy "PSWs can read their own profile"
   on public.psw_profiles for select
   using (auth.uid() = id or user_has_role('admin'));
@@ -88,12 +131,12 @@ create policy "Clients and admins can view approved PSW profiles"
 
 create policy "PSWs can create their own profile"
   on public.psw_profiles for insert
-  with check (auth.uid() = id);
+  with check (auth.uid() = id and status = 'pending');
 
 create policy "PSWs can update their own profile"
   on public.psw_profiles for update
   using (auth.uid() = id or user_has_role('admin'))
-  with check (auth.uid() = id or user_has_role('admin'));
+  with check (user_has_role('admin') or (auth.uid() = id and status = current_psw_status(id)));
 
 create table if not exists public.psw_documents (
   id uuid primary key default gen_random_uuid(),
@@ -115,7 +158,12 @@ create policy "PSWs can see their own document records"
 
 create policy "PSWs can upload their own documents"
   on public.psw_documents for insert
-  with check (auth.uid() = psw_id);
+  with check (
+    auth.uid() = psw_id
+    and status = 'pending'
+    and reviewed_by is null
+    and reviewed_at is null
+  );
 
 create policy "Admins can review all documents"
   on public.psw_documents for update
@@ -196,12 +244,12 @@ create policy "Clients can create bookings for themselves"
 create policy "Clients can update their own bookings"
   on public.bookings for update
   using (auth.uid() = client_id or user_has_role('admin'))
-  with check (auth.uid() = client_id or user_has_role('admin'));
+  with check ((auth.uid() = client_id and status in ('requested', 'cancelled')) or user_has_role('admin'));
 
 create policy "Assigned PSWs can update booking status relevant to their work"
   on public.bookings for update
-  using (auth.uid() = psw_id::uuid or user_has_role('admin'))
-  with check (auth.uid() = psw_id::uuid or user_has_role('admin'));
+  using (auth.uid() = psw_id or user_has_role('admin'))
+  with check ((auth.uid() = psw_id and status in ('accepted', 'in_progress', 'completed', 'no_show')) or user_has_role('admin'));
 
 create table if not exists public.booking_events (
   id uuid primary key default gen_random_uuid(),
@@ -308,6 +356,7 @@ create policy "Clients can leave a review for their completed booking"
       select 1 from public.bookings b
       where b.id = booking_id
         and b.client_id = auth.uid()
+        and b.status = 'completed'
     )
   );
 
