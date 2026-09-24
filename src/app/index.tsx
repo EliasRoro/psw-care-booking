@@ -22,20 +22,15 @@ export default function HomeScreen() {
         <Link href="/login" asChild><Pressable style={styles.navButton}><Text style={styles.navButtonText}>Member login</Text></Pressable></Link>
       </View>
 
-      <View style={[styles.hero, isWide && styles.heroWide]}>
-        <View style={[styles.heroCopy, isWide && styles.heroCopyWide]}>
-          <Text style={styles.kicker}>PERSONAL HOME SUPPORT IN ONTARIO</Text>
-          <Text style={styles.heroTitle}>Care that feels like it belongs at home.</Text>
-          <Text style={styles.heroText}>Thoughtful, dependable PSW support for the moments that make everyday life easier.</Text>
-          <View style={styles.heroActions}>
-            <Link href="/book" asChild><Pressable style={styles.primaryButton}><Text style={styles.primaryButtonText}>Find your care plan</Text></Pressable></Link>
-            <Link href="/about" asChild><Pressable style={styles.textButton}><Text style={styles.textButtonText}>How it works {'>'}</Text></Pressable></Link>
-          </View>
-          <View style={styles.trustRow}><Text style={styles.trustNumber}>01</Text><Text style={styles.trustText}>Matched around your routine, preferences, and pace.</Text></View>
-        </View>
-        <View style={[styles.heroImageFrame, isWide && styles.heroImageFrameWide]}>
-          <Image source={heroImage} style={styles.heroImage} resizeMode="cover" accessibilityLabel="Caregiver spending time with an older adult at home" />
-          <View style={styles.imageCaption}><Text style={styles.captionSmall}>THE PSW CARE STANDARD</Text><Text style={styles.captionLarge}>Warm hands. Clear communication. Real peace of mind.</Text></View>
+      <View style={styles.heroStage}>
+        <Image source={heroImage} style={styles.heroStageImage} resizeMode="cover" accessibilityLabel="Caregiver spending time with an older adult at home" />
+        <View style={styles.heroStageOverlay} />
+        <View style={styles.heroStageContent}>
+          <Text style={styles.heroStageKicker}>PSW CARE  /  ONTARIO</Text>
+          <Text style={styles.heroStageTitle}>Care, considered.</Text>
+          <Text style={styles.heroStageText}>A calmer way to arrange trusted support at home.</Text>
+          <Link href="/book" asChild><Pressable style={styles.heroStageButton}><Text style={styles.heroStageButtonText}>Request care</Text></Pressable></Link>
+          <Text style={styles.heroStageFootnote}>Thoughtful matching. Clear communication. Real peace of mind.</Text>
         </View>
       </View>
 
@@ -65,14 +60,24 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#f7f3ec' },
   contentContainer: { paddingBottom: 32 },
-  navbar: { width: '100%', maxWidth: 1240, alignSelf: 'center', paddingHorizontal: 24, paddingVertical: 24, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 18 },
-  logo: { color: '#1b3933', fontSize: 18, fontWeight: '900', letterSpacing: 1.8 },
-  logoAccent: { color: '#cf7554' },
-  logoSubline: { color: '#7a8177', fontSize: 10, marginTop: 4, letterSpacing: 0.4 },
+  navbar: { width: '100%', maxWidth: 1240, alignSelf: 'center', paddingHorizontal: 24, paddingVertical: 24, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 18, backgroundColor: '#111615' },
+  logo: { color: '#f7f3ec', fontSize: 18, fontWeight: '900', letterSpacing: 1.8 },
+  logoAccent: { color: '#e9a06f' },
+  logoSubline: { color: '#aab5ae', fontSize: 10, marginTop: 4, letterSpacing: 0.4 },
   navLinks: { flexDirection: 'row', gap: 22, alignItems: 'center', flex: 1, justifyContent: 'center' },
-  navLink: { color: '#4c5c55', fontSize: 13, fontWeight: '600' },
-  navButton: { borderWidth: 1, borderColor: '#c8bcae', paddingHorizontal: 15, paddingVertical: 10, borderRadius: 2 },
-  navButtonText: { color: '#1b3933', fontSize: 12, fontWeight: '800' },
+  navLink: { color: '#d6ded9', fontSize: 13, fontWeight: '600' },
+  navButton: { borderWidth: 1, borderColor: '#73847c', paddingHorizontal: 15, paddingVertical: 10, borderRadius: 2 },
+  navButtonText: { color: '#f7f3ec', fontSize: 12, fontWeight: '800' },
+  heroStage: { width: '100%', minHeight: 610, position: 'relative', backgroundColor: '#1b3933', overflow: 'hidden' },
+  heroStageImage: { width: '100%', height: '100%', position: 'absolute' },
+  heroStageOverlay: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(17, 22, 21, 0.52)' },
+  heroStageContent: { minHeight: 610, paddingHorizontal: 28, paddingVertical: 64, justifyContent: 'flex-end', alignItems: 'flex-start', maxWidth: 1240, width: '100%', alignSelf: 'center' },
+  heroStageKicker: { color: '#e9a06f', fontSize: 11, fontWeight: '900', letterSpacing: 2, marginBottom: 18 },
+  heroStageTitle: { color: '#fffaf3', fontSize: 64, lineHeight: 66, fontWeight: '800', letterSpacing: -1 },
+  heroStageText: { color: '#eef1ed', fontSize: 19, lineHeight: 27, maxWidth: 410, marginTop: 15 },
+  heroStageButton: { backgroundColor: '#e9a06f', paddingHorizontal: 23, paddingVertical: 15, borderRadius: 2, marginTop: 25 },
+  heroStageButtonText: { color: '#1b3933', fontSize: 13, fontWeight: '900' },
+  heroStageFootnote: { color: '#cbd4ce', fontSize: 11, marginTop: 36, letterSpacing: 0.4 },
   hero: { width: '100%', maxWidth: 1240, alignSelf: 'center', paddingHorizontal: 24, paddingTop: 26, paddingBottom: 64 },
   heroWide: { flexDirection: 'row', alignItems: 'stretch', gap: 42 },
   heroCopy: { paddingTop: 34, paddingBottom: 42 },
