@@ -1,6 +1,6 @@
-import { useFocusEffect } from 'expo-router';
+import { Link, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { bookings } from '../data/mockData';
 import { getUserBookings, UserBooking } from '../lib/bookings';
@@ -31,7 +31,8 @@ export default function MyBookingsScreen() {
       <Text style={styles.header}>My bookings</Text>
 
       {allBookings.map((booking) => (
-        <View key={booking.id} style={styles.card}>
+        <Link key={booking.id} href="/booking-detail" asChild>
+          <Pressable style={styles.card}>
           <View style={styles.topRow}>
             <Text style={styles.service}>{booking.service}</Text>
             <Text style={styles.status}>{booking.status}</Text>
@@ -40,7 +41,8 @@ export default function MyBookingsScreen() {
           <Text style={styles.meta}>{booking.date} • {booking.time}</Text>
           <Text style={styles.meta}>Caregiver: {booking.caregiver}</Text>
           <Text style={styles.amount}>{booking.amount}</Text>
-        </View>
+          </Pressable>
+        </Link>
       ))}
     </ScrollView>
   );
