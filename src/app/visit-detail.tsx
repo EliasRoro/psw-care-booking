@@ -2,18 +2,28 @@ import { Link } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { recordVisitEvent } from '../lib/visitService';
+
 export default function VisitDetailScreen() {
   const [visitState, setVisitState] = useState<'upcoming' | 'in-progress' | 'completed'>('upcoming');
 
-  const updateVisit = () => {
-    if (visitState === 'upcoming') {
-      setVisitState('in-progress');
-      Alert.alert('Checked in', 'Your visit has started. Keep notes factual and non-clinical.');
-      return;
-    }
+  const updateVisit = async () => {
+    const nextEvent = visitState === 'upcoming' ? 'checked_in' : 'checked_out';
 
-    setVisitState('completed');
-    Alert.alert('Checked out', 'Visit time recorded for the care team.');
+    try {
+      await recordVisitEvent('bk-101', nextEvent);
+
+      if (visitState === 'upcoming') {
+        setVisitState('in-progress');
+        Alert.alert('Checked in', 'Your visit has started. Keep notes factual and non-clinical.');
+        return;
+      }
+
+      setVisitState('completed');
+      Alert.alert('Checked out', 'Visit time recorded for the care team.');
+    } catch (error) {
+      Alert.alert('Unable to update visit', error instanceof Error ? error.message : 'Please try again.');
+    }
   };
 
   const buttonLabel = visitState === 'upcoming' ? 'Check in to visit' : visitState === 'in-progress' ? 'Check out of visit' : 'Visit completed';
