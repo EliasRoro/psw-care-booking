@@ -3,16 +3,16 @@ import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { bookings } from '../data/mockData';
-import { getUserBookings, UserBooking } from '../lib/bookings';
+import { BookingRecord, getClientBookings } from '../lib/bookingService';
 
 export default function MyBookingsScreen() {
-  const [userBookings, setUserBookings] = useState<UserBooking[]>([]);
+  const [userBookings, setUserBookings] = useState<BookingRecord[]>([]);
 
   useFocusEffect(
     useCallback(() => {
       let active = true;
 
-      getUserBookings().then((storedBookings) => {
+      getClientBookings().then((storedBookings) => {
         if (active) {
           setUserBookings(storedBookings);
         }

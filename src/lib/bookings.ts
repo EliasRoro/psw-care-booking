@@ -7,7 +7,7 @@ export type UserBooking = {
   service: string;
   date: string;
   time: string;
-  status: 'Requested';
+  status: 'Requested' | 'Confirmed' | 'Completed' | 'Cancelled';
   caregiver: string;
   amount: string;
   clientName: string;
