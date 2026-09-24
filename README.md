@@ -77,6 +77,12 @@ This repository currently contains the project foundation and the first mileston
 - caregiver and schedule preview screens
 - Supabase client setup
 
+## Database milestone
+
+The project has also started the database layer in `supabase/migrations/001_initial_schema.sql` and `supabase/README.md`.
+
+This migration includes the core tables for the PSW booking app and enables Row Level Security on every table. Each policy is documented in plain language in the Supabase README so the app is designed with privacy and access control in mind.
+
 ## License
 
 This project is provided as a starting point for a PSW booking MVP and is not medical advice.
