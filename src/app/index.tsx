@@ -51,7 +51,7 @@ export default function HomeScreen() {
       </View>
 
       <View style={[styles.storyBlock, isWide && styles.storyBlockWide]}>
-        <Image source={detailImage} style={styles.detailImage} resizeMode="cover" accessibilityLabel="Family member and caregiver sharing a quiet moment" />
+        <Image source={detailImage} style={[styles.detailImage, isWide && styles.detailImageWide]} resizeMode="cover" accessibilityLabel="Family member and caregiver sharing a quiet moment" />
         <View style={styles.storyCopy}><Text style={styles.sectionKicker}>CARE, ON YOUR TERMS</Text><Text style={styles.storyTitle}>Support should fit your life, not rearrange it.</Text><Text style={styles.storyText}>Whether you need companionship, personal care, recovery support, or a little more breathing room for family, we start with what matters to you.</Text><Link href="/information" asChild><Pressable style={styles.outlineButton}><Text style={styles.outlineButtonText}>Explore care information</Text></Pressable></Link></View>
       </View>
 
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
   storyBlock: { width: '100%', maxWidth: 1240, alignSelf: 'center', paddingHorizontal: 24, paddingBottom: 68, gap: 30 },
   storyBlockWide: { flexDirection: 'row', alignItems: 'center' },
   detailImage: { width: '100%', height: 300, backgroundColor: '#d8cfc1' },
+  detailImageWide: { flex: 1, width: undefined },
   storyCopy: { flex: 1, paddingHorizontal: 4 },
   storyTitle: { color: '#1b3933', fontSize: 34, lineHeight: 39, fontWeight: '800', marginBottom: 16 },
   storyText: { color: '#68766e', fontSize: 15, lineHeight: 24, marginBottom: 24 },
