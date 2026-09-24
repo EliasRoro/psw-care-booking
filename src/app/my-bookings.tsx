@@ -1,13 +1,36 @@
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { bookings } from '../data/mockData';
+import { getUserBookings, UserBooking } from '../lib/bookings';
 
 export default function MyBookingsScreen() {
+  const [userBookings, setUserBookings] = useState<UserBooking[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      let active = true;
+
+      getUserBookings().then((storedBookings) => {
+        if (active) {
+          setUserBookings(storedBookings);
+        }
+      });
+
+      return () => {
+        active = false;
+      };
+    }, []),
+  );
+
+  const allBookings = [...userBookings, ...bookings];
+
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.contentContainer}>
       <Text style={styles.header}>My bookings</Text>
 
-      {bookings.map((booking) => (
+      {allBookings.map((booking) => (
         <View key={booking.id} style={styles.card}>
           <View style={styles.topRow}>
             <Text style={styles.service}>{booking.service}</Text>

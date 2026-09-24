@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { careOptions } from '../data/mockData';
+import { saveUserBooking } from '../lib/bookings';
 
 export default function BookScreen() {
   const params = useLocalSearchParams<{ service?: string }>();
@@ -26,7 +27,19 @@ export default function BookScreen() {
     [service],
   );
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    await saveUserBooking({
+      id: `local-${Date.now()}`,
+      service,
+      date,
+      time,
+      status: 'Requested',
+      caregiver: 'Pending match',
+      amount: selectedOption.price,
+      clientName,
+      notes,
+    });
+
     router.push({
       pathname: '/confirmation',
       params: {

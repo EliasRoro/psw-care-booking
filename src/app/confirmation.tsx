@@ -13,8 +13,8 @@ export default function ConfirmationScreen() {
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.contentContainer}>
       <View style={styles.confirmationCard}>
-        <Text style={styles.badge}>Booking confirmed</Text>
-        <Text style={styles.title}>Your care visit is booked.</Text>
+        <Text style={styles.badge}>Request received</Text>
+        <Text style={styles.title}>We received your care request.</Text>
 
         <View style={styles.detailRow}>
           <Text style={styles.label}>Service</Text>
