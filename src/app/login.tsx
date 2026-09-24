@@ -4,18 +4,16 @@ import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-nativ
 
 import { hasSupabaseConfig, supabase } from '../lib/supabase';
 
-type Workspace = 'client' | 'psw' | 'admin';
+type Workspace = 'client' | 'psw';
 
 const workspaceDetails: Record<Workspace, { label: string; description: string }> = {
   client: { label: 'Client', description: 'Request care and manage visits' },
   psw: { label: 'PSW', description: 'Manage visits and availability' },
-  admin: { label: 'Admin', description: 'Support the care team and queue' },
 };
 
-const workspaceRoutes: Record<Workspace, '/client-dashboard' | '/psw-dashboard' | '/admin-dashboard'> = {
+const workspaceRoutes: Record<Workspace, '/client-dashboard' | '/psw-dashboard'> = {
   client: '/client-dashboard',
   psw: '/psw-dashboard',
-  admin: '/admin-dashboard',
 };
 
 export default function LoginScreen() {
